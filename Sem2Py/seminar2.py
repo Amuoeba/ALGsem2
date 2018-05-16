@@ -146,12 +146,19 @@ print("Which lines is a point part of?")
 for p in points:
     print("PointID :",p.id,"PartOf: ",p.partOf)
 
-
+print("Pre heapify points: ")
+print(points)
 heapq.heapify(points)
+print("After heapify points: ")
+print(points)
 x1 = heapq.heappop(points)
 x2 = heapq.heappop(points)
+print("Heap tests")
 print(x1.partOf)
 print(x2.partOf)
+print("Type of points: ",type(points) )
+print("After poping top heap points")
+print(points)
 
 
 
