@@ -7,7 +7,7 @@ import heapq
 
 class Point:    
     pointCounter = 0    
-    def __init__(self,x,y,color):
+    def __init__(self,x,y,color=0):
         self.x = x
         self.y = y
         self.color = color
@@ -108,6 +108,42 @@ def createSegments(rawEntries):
         
     
     return pointList, lineList, segmentList
+
+def lineItersection(line1,line2,inf = False):
+    assert isinstance(line1,Line)
+    assert isinstance(line2,Line)
+    A1 = line1.p2.y - line1.p1.y
+    B1 = line1.p1.x - line1.p2.x
+    C1 = A1 * line1.p1.x + B1 * line1.p1.y
+    
+    A2 = line2.p2.y - line2.p1.y
+    B2 = line2.p1.x - line2.p2.x
+    C2 = A2 * line2.p1.x + B2 * line2.p1.y
+    
+    det = A1 * B2 - A2* B1
+    
+    print(A1,A2,"----",B1,B2,"-----",C1,C2)
+    print("C1: ", C1, "Račun: ",A1 * line2.p1.x + B1 * line2.p1.y )
+    print("C1: ", C1, "Račun: ",A1 * line2.p2.x + B1 * line2.p2.y )
+    if C1 == A1 * line2.p1.x + B1 * line2.p1.y and C1 == A1 * line2.p2.x + B1 * line2.p2.y:
+        return "Colinear"
+    if det == 0:
+        return None
+    else:
+        xp = (B2 * C1 - B1 * C2)/det
+        yp = (A1 * C2 - A2 * C1)/det
+        xpBetweenL1 = xp <= max([line1.p1.x,line1.p2.x]) and xp >= min([line1.p1.x,line1.p2.x])
+        ypBetweenL1 = yp <= max([line1.p1.y,line1.p2.y]) and yp >= min([line1.p1.y,line1.p2.y])
+        xpBetweenL2 = xp <= max([line2.p1.x,line2.p2.x]) and xp >= min([line2.p1.x,line2.p2.x])
+        ypBetweenL2 = yp <= max([line2.p1.y,line2.p2.y]) and yp >= min([line2.p1.y,line2.p2.y])
+        
+        if inf:
+            return Point(xp,yp)
+        if xpBetweenL1 and ypBetweenL1 and xpBetweenL2 and ypBetweenL2:
+            return Point(xp,yp)
+        else:
+            return None
+    
 #################### DEFINITION OF FUNCTIONS #####################################
 
 
@@ -160,7 +196,10 @@ print("Type of points: ",type(points) )
 print("After poping top heap points")
 print(points)
 
-
+l1 = Line(Point(-2,2),Point(-1,1))
+l2 = Line(Point(-2,2),Point(-3,5))
+print("Line intersection test")
+print(lineItersection(l1,l2,inf=False))
 
 
 ################################### EXECUTION OF THE PROGRAM ############################
